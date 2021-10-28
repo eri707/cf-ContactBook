@@ -1,0 +1,93 @@
+﻿@page "/"
+
+<div class="container">
+    <div class="ml-3 mt-3">
+        <div class="is-flex is-justify-content-start mt-6">
+            <h1>Contact Book</h1>
+            <span style="cursor:pointer"><i class="fas fa-user-plus ml-5" @onclick="@(() => ModalIsVisible = true)"></i></span>
+        </div>
+        <!-- This is communication betwwen parent and child componet -->
+        <AddAddress Visible="ModalIsVisible" CloseModal="CloseAddressModal" AddToContactList="AddContactList" Contact="AddContactObject"/>
+
+        <div class="columns mt-3">
+            <div class="column">
+                <div class="grid-container p-3">
+                    <p class="grid-item1 has-text-centered">Name</p>
+                    <p class="grid-item2 has-text-centered">Email</p>
+                    @foreach (var item in contactList)
+                    {
+                        <a class="grid-item subtitle" @onclick="@(() => SelectContact(item))">@item.FirstName @item.LastName</a>
+                        <p class="grid-item subtitle">@item.Email</p>
+                        <span class="ml-3" @onclick="@(() => DeleteItem(item))"><i class="fas fa-times"></i></span>
+                    }
+
+                </div>
+            </div>
+            <div class="column">
+                @if (selectedContact == null)
+                {
+                    <ScreenBeforeSelect />
+                }
+                else
+                {
+                    <AddressDetail Contact="selectedContact" />
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@code {
+    // Creats an empty object to add each item from AddAddress.razor
+    public List<Contact> contactList = new List<Contact>();
+    public Contact selectedContact = new Contact()
+    {
+        FirstName = "Eri",
+        LastName = "Kilanowski",
+        PhoneNumber = "455-323-4543",
+        Email = "eri4324@gmail.com",
+        Address = "37467 NE 342 St, Kirkland, WA"
+    };
+    // Modal is closed initially
+    private bool ModalIsVisible { get; set; } = false;
+    // This method will be invoked by the child component (by ClosedModal)
+    private void CloseAddressModal()
+    {
+        ModalIsVisible = false;
+        AddContactObject = new Contact();
+    }
+    // creates a container to store the information from the modal
+    // if delete this code, can't have that information since there is no space to store them
+    public Contact AddContactObject { get; set; } = new Contact();
+
+    private void AddContactList()
+    {
+        contactList.Add(new Contact {
+            FirstName = AddContactObject.FirstName,
+            LastName = AddContactObject.LastName,
+            PhoneNumber = AddContactObject.PhoneNumber,
+            Email = AddContactObject.Email,
+            Address = AddContactObject.Address
+        });
+        ModalIsVisible = false;
+        StateHasChanged();
+        AddContactObject = new Contact();
+    }
+    private void SelectContact(Contact contact)
+    {
+        selectedContact = contact;
+    }
+
+    private void DeleteItem(Contact contact)
+    {
+        var itemToRemove = contactList.Single(i => i == contact);
+        contactList.Remove(itemToRemove);
+        selectedContact = null;
+    }
+
+
+}
+
+
+

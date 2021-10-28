@@ -1,0 +1,43 @@
+﻿
+
+    <div class="card">
+        <div class="card-content pl-1 pr-1 pb-1">
+            <div class="is-flex">
+                <figure class="image is-128x128">
+                    <img src="./sample-data/dummy_user.png">
+                </figure>
+                <div>
+                    <div>
+                        <span class="subtitle">First name:</span>
+                        <span class="subtitle">@Contact?.FirstName</span>
+                    </div>
+                    <div>
+                        <span class="subtitle">Last name:</span>
+                        <span class="subtitle">@Contact?.LastName</span>
+                    </div>
+                    <div>
+                        <span class="subtitle">Phone:</span>
+                        <span class="subtitle">@Contact?.PhoneNumber</span>
+                    </div>
+                    <div>
+                        <span class="subtitle">Email:</span>
+                        <span class="subtitle">@Contact?.Email</span>
+                    </div>
+                    <div>
+                        <span class="subtitle">Address:</span>
+                        <span class="subtitle">@Contact?.Address</span>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+
+
+@code {
+    [Parameter]
+    public Contact Contact { get; set; } 
+
+
+
+}

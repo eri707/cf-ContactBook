@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+ <!-- This html page is the only real page in a Blazor WebAssembly application. All other “pages” are components that get rendered inside the app component. -->
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>ContactBook</title>
+    <!--  the Index.html page must contain a <base> tag containing an href attribute that specifies the base path of the application. -->
+    <base href="/" />
+    <!-- You can completely remove these .css files or add additional .css files if you like -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
+    <link href="https://use.fontawesome.com/releases/v5.0.8/css/all.css" rel="stylesheet" />
+    <link href="css/app.css" rel="stylesheet" />
+    <link href="ContactBook.styles.css" rel="stylesheet" />
+</head>
+
+<body>
+    <div id="app">Loading...</div>
+    <!-- This div is for handling exceptions -->
+    <div id="blazor-error-ui">
+        An unhandled error has occurred.
+        <a href="" class="reload">Reload</a>
+        <a class="dismiss">🗙</a>
+    </div>
+    <!-- blazor.webassembly.js downloads application DLLs and the .NET runtime. It then hooks the DOM in the browser and
+            manages all interaction between the application and the UI -->
+    <script src="_framework/blazor.webassembly.js"></script>
+</body>
+
+</html>
