@@ -6,7 +6,7 @@
         <div class="modal-background"></div>
         <div class="modal-card">
             <header class="modal-card-head pt-3">
-                <p class="modal-card-title mb-0">Add address</p>
+                <p class="modal-card-title mb-0">Add Address</p>
                 <button class="delete" aria-label="close" @onclick="@ModalCancel"></button>
             </header>
             <section class="modal-card-body">
@@ -36,13 +36,13 @@
                 </div>
             </section>
             <footer class="modal-card-foot">
-                @if (string.IsNullOrEmpty(Contact.FirstName) || string.IsNullOrEmpty(Contact.LastName))
+                @if (string.IsNullOrEmpty(Contact.FirstName) && string.IsNullOrEmpty(Contact.LastName))
                 {
-                    <button class="button is-success" disabled @onclick="@AddContact">Add address</button>
+                    <button class="button is-success" disabled @onclick="@AddContact">Add Address</button>
                 }
                 else
                 {
-                    <button class="button is-success" @onclick="@AddContact">Add address</button>
+                    <button class="button is-success" @onclick="@AddContact">Add Address</button>
                 }
                 <button class="button" @onclick="@ModalCancel">Cancel</button>
             </footer>

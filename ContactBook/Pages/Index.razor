@@ -24,10 +24,18 @@
                  <tbody>
                     @foreach (var item in contactList)
                      { 
-                        <tr>
-                            <td class="is-flex pb-0 mb-0 pt-3" style="vertical-align: middle;" ><p class="circle has-text-white is-size-7 has-text-centered pt-1 mr-2">@item.FirstLetter(item.FirstName)@item.FirstLetter(item.LastName)</p><a class="mb-0" ><span class="subtitle has-text-info" @onclick="@(() => SelectContact(item))">@item.FirstName @item.LastName</span></a></td>
+                        <tr class="@(IsSelected(item)? "is-selected" : "")">
+                            <td class="is-flex pb-0 mb-0 pt-3">
+                                <p class="circle has-text-white is-size-7 has-text-centered pt-1 mr-2">@item.FirstLetter(item.FirstName)@item.FirstLetter(item.LastName)</p>
+                                <a class="mb-0" >
+                                    <span class="subtitle has-text-info" @onclick="@(() => SelectContact(item))">@item.FirstName @item.LastName</span>
+                                </a>
+                            </td>
                             <td class="subtitle">@item.Email</td>
-                            <td class="ml-3 pt-4 is-size-7" ><a @onclick="@(() => DeleteItem(item))">Delete | </a><a @onclick="@(() => EditButton(item))">Edit</a></td>
+                            <td class="ml-3 pt-4 is-size-7" >
+                                <a @onclick="@(() => DeleteItem(item))">Delete | </a>
+                                <a @onclick="@(() => EditButton(item))">Edit</a>
+                            </td>
                         </tr>
                      }
                 </tbody>
@@ -95,7 +103,10 @@
     {
         selectedContact = contact;
     }
-
+    private bool IsSelected(Contact contact)
+    {   // return boolean
+        return selectedContact == contact;
+    }
     private void EditButton(Contact contact)
     {
         EditModalIsVisible = true;
