@@ -1,33 +1,36 @@
 ﻿@using ContactBook
 
+
 <div class="modal @(Visible ? "is-active" : "")">
     <!-- if visible is true, then add "is-active" into the class -->
-    
+
+    @if (Contact != null)
+    {
         <div class="modal-background"></div>
         <div class="modal-card">
             <header class="modal-card-head pt-3">
-                <p class="modal-card-title mb-0">Add address</p>
+                <p class="modal-card-title mb-0">Edit address</p>
                 <button class="delete" aria-label="close" @onclick="@ModalCancel"></button>
             </header>
             <section class="modal-card-body">
-                    <div class="is-flex">
-                        <div class="mb-2 mr-4">
-                            <label for="fname">First name:</label>
-                            <input  class="input" type="text" placeholder="First name" @bind="Contact.FirstName" required />
-                        </div>
-                        <div>
-                            <label for="lname">Last name:</label>
-                            <input class="input" type="text" placeholder="Last name" @bind="Contact.LastName" required/>
-                        </div>
+                <div class="is-flex">
+                    <div class="mb-2 mr-4">
+                        <label for="fname">First name:</label>
+                        <input class="input" type="text" placeholder="First name" @bind="Contact.FirstName" required />
                     </div>
+                    <div>
+                        <label for="lname">Last name:</label>
+                        <input class="input" type="text" placeholder="Last name" @bind="Contact.LastName" required />
+                    </div>
+                </div>
                 <div class="is-flex">
                     <div class="mr-4">
                         <label for="phone">Phone:</label>
-                        <input class="input" type="tel" pattern="([\-]?\d[\-]?){10}" required placeholder="(XXX) XXX-XXXX" @bind="Contact.PhoneNumber" style="width: 285px;"/>
+                        <input class="input" type="tel" pattern="([\-]?\d[\-]?){10}" required placeholder="(XXX) XXX-XXXX" @bind="Contact.PhoneNumber" style="width: 285px;" />
                     </div>
                     <div>
                         <label for="email">Email:</label>
-                        <input class="input" type="text" placeholder="XXXX@gmail.com" @bind="Contact.Email" style="width: 285px;"/>
+                        <input class="input" type="text" placeholder="XXXX@gmail.com" @bind="Contact.Email" style="width: 285px;" />
                     </div>
                 </div>
                 <div class="mt-2">
@@ -38,15 +41,17 @@
             <footer class="modal-card-foot">
                 @if (string.IsNullOrEmpty(Contact.FirstName) || string.IsNullOrEmpty(Contact.LastName))
                 {
-                    <button class="button is-success" disabled @onclick="@AddContact">Add address</button>
+                    <button class="button is-success" disabled @onclick="@ChangeContact">Save</button>
                 }
                 else
                 {
-                    <button class="button is-success" @onclick="@AddContact">Add address</button>
+                    <button class="button is-success" @onclick="@ChangeContact">Save</button>
                 }
                 <button class="button" @onclick="@ModalCancel">Cancel</button>
             </footer>
         </div>
+    }
+
 </div>
 
 
@@ -67,13 +72,12 @@
     public Contact Contact { get; set; }
 
     [Parameter]
-    public EventCallback AddToContactList { get; set; }
-    public void AddContact()
+    public EventCallback ChangeToContactList { get; set; }
+    public void ChangeContact()
     {
-        AddToContactList.InvokeAsync();
+        ChangeToContactList.InvokeAsync();
     }
 
     private Contact contact = new();
-
-
+    
 }

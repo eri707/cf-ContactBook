@@ -1,3 +1,4 @@
+using Blazored.LocalStorage;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -19,6 +20,8 @@ namespace ContactBook
             builder.RootComponents.Add<App>("#app");
             // add serveices
             builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
+            // register the local storage services 
+            builder.Services.AddBlazoredLocalStorage();
 
             await builder.Build().RunAsync();
         }

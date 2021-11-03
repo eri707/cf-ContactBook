@@ -1,29 +1,39 @@
-﻿@page "/"
+﻿@inject Blazored.LocalStorage.ILocalStorageService localStore
+@page "/"
 
 <div class="container">
     <div class="ml-3 mt-3">
-        <div class="is-flex is-justify-content-start mt-6">
+        <div class="is-flex is-justify-content-space-between mt-6" style="width: 47%">
             <h1>Contact Book</h1>
-            <span style="cursor:pointer"><i class="fas fa-user-plus ml-5" @onclick="@(() => ModalIsVisible = true)"></i></span>
+            <button class="button is-danger" @onclick="@(() => ModalIsVisible = true)">Add Contact</button>
         </div>
         <!-- This is communication betwwen parent and child componet -->
-        <AddAddress Visible="ModalIsVisible" CloseModal="CloseAddressModal" AddToContactList="AddContactList" Contact="AddContactObject"/>
+        <AddAddress Visible="ModalIsVisible" CloseModal="CloseAddressModal" AddToContactList="AddContactList" Contact="AddContactObject" />
+        <EditAddress Visible="EditModalIsVisible" CloseModal="CloseEditAddressModal" ChangeToContactList="ChangeContactList" Contact="selectedContact"/>
 
         <div class="columns mt-3">
             <div class="column">
-                <div class="grid-container p-3">
-                    <p class="grid-item1 has-text-centered">Name</p>
-                    <p class="grid-item2 has-text-centered">Email</p>
+                 <table class="table is-striped">
+                     <thead>
+                        <tr>
+                            <td>Name</td>
+                            <td>Email</td>
+                            <td></td>
+                        </tr>
+                </thead>
+                 <tbody>
                     @foreach (var item in contactList)
-                    {
-                        <a class="grid-item subtitle" @onclick="@(() => SelectContact(item))">@item.FirstName @item.LastName</a>
-                        <p class="grid-item subtitle">@item.Email</p>
-                        <span class="ml-3" @onclick="@(() => DeleteItem(item))"><i class="fas fa-times"></i></span>
-                    }
-
-                </div>
+                     { 
+                        <tr>
+                            <td class="is-flex pb-0 mb-0 pt-3" style="vertical-align: middle;" ><p class="circle has-text-white is-size-7 has-text-centered pt-1 mr-2">@item.FirstLetter(item.FirstName)@item.FirstLetter(item.LastName)</p><a class="mb-0" ><span class="subtitle has-text-info" @onclick="@(() => SelectContact(item))">@item.FirstName @item.LastName</span></a></td>
+                            <td class="subtitle">@item.Email</td>
+                            <td class="ml-3 pt-4 is-size-7" ><a @onclick="@(() => DeleteItem(item))">Delete | </a><a @onclick="@(() => EditButton(item))">Edit</a></td>
+                        </tr>
+                     }
+                </tbody>
+                </table>
             </div>
-            <div class="column">
+            <div class="column ml-6">
                 @if (selectedContact == null)
                 {
                     <ScreenBeforeSelect />
@@ -41,21 +51,20 @@
 @code {
     // Creats an empty object to add each item from AddAddress.razor
     public List<Contact> contactList = new List<Contact>();
-    public Contact selectedContact = new Contact()
-    {
-        FirstName = "Eri",
-        LastName = "Kilanowski",
-        PhoneNumber = "455-323-4543",
-        Email = "eri4324@gmail.com",
-        Address = "37467 NE 342 St, Kirkland, WA"
-    };
+    public Contact selectedContact = null;
     // Modal is closed initially
     private bool ModalIsVisible { get; set; } = false;
+    private bool EditModalIsVisible { get; set; } = false;
+
     // This method will be invoked by the child component (by ClosedModal)
     private void CloseAddressModal()
     {
         ModalIsVisible = false;
         AddContactObject = new Contact();
+    }
+    private void CloseEditAddressModal()
+    {
+        EditModalIsVisible = false;
     }
     // creates a container to store the information from the modal
     // if delete this code, can't have that information since there is no space to store them
@@ -63,29 +72,60 @@
 
     private void AddContactList()
     {
-        contactList.Add(new Contact {
+        contactList.Add(new Contact
+        {
             FirstName = AddContactObject.FirstName,
             LastName = AddContactObject.LastName,
             PhoneNumber = AddContactObject.PhoneNumber,
             Email = AddContactObject.Email,
             Address = AddContactObject.Address
         });
+        SaveLocalStorage();
         ModalIsVisible = false;
         StateHasChanged();
         AddContactObject = new Contact();
+    }
+    private void ChangeContactList()
+    {
+        SaveLocalStorage();
+        EditModalIsVisible = false;
+        StateHasChanged();
     }
     private void SelectContact(Contact contact)
     {
         selectedContact = contact;
     }
 
-    private void DeleteItem(Contact contact)
+    private void EditButton(Contact contact)
     {
-        var itemToRemove = contactList.Single(i => i == contact);
-        contactList.Remove(itemToRemove);
-        selectedContact = null;
+        EditModalIsVisible = true;
+        selectedContact = contact;
     }
 
+    private void DeleteItem(Contact contact)
+    {
+        contactList.Remove(contact);
+        selectedContact = null;
+        SaveLocalStorage();
+    }
+    // store data into localStorage
+    const string contactKey = "contact";
+    public async void SaveLocalStorage()
+    {
+        await localStore.SetItemAsync(contactKey, contactList);
+    }
+    // read data from localStorage
+    public async Task GetLocalStorage()
+    {
+        var result = await localStore.GetItemAsync<List<Contact>>(contactKey);
+        if (result == null) return;
+        contactList = result;
+    }
+    // invoke methods when start loading html
+    protected override async Task OnInitializedAsync()
+    {
+        await GetLocalStorage();
+    }
 
 }
 

@@ -8,15 +8,21 @@ namespace ContactBook
 {
     public class Contact
     {
-        [Required, StringLength(30), RegularExpression("/^[A-Za-z]+$/")]
+        [Required] 
+        [StringLength(50)] 
         public string FirstName { get; set; }
-        [Required, StringLength(30), RegularExpression("/^[A-Za-z]+$/")]
+        [Required]
+        [StringLength(50)]
         public string LastName { get; set; }
-        [Required, RangeAttribute(0, 10)]
+        [Required]
+        [Phone]
         public string PhoneNumber { get; set; }
         [Required]
+        [EmailAddress]
         public string Email { get; set; }
         [Required]
         public string Address { get; set; }
+
+        public string FirstLetter(string name) => name?.Substring(0, 1);
     }
 }

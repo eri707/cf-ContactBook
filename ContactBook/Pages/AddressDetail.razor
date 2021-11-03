@@ -1,42 +1,61 @@
 ﻿
 
-    <div class="card">
-        <div class="card-content pl-1 pr-1 pb-1">
-            <div class="is-flex">
-                <figure class="image is-128x128">
-                    <img src="./sample-data/dummy_user.png">
-                </figure>
-                <div>
-                    <div>
-                        <span class="subtitle">First name:</span>
-                        <span class="subtitle">@Contact?.FirstName</span>
-                    </div>
-                    <div>
-                        <span class="subtitle">Last name:</span>
-                        <span class="subtitle">@Contact?.LastName</span>
-                    </div>
-                    <div>
-                        <span class="subtitle">Phone:</span>
-                        <span class="subtitle">@Contact?.PhoneNumber</span>
-                    </div>
-                    <div>
-                        <span class="subtitle">Email:</span>
-                        <span class="subtitle">@Contact?.Email</span>
-                    </div>
-                    <div>
-                        <span class="subtitle">Address:</span>
-                        <span class="subtitle">@Contact?.Address</span>
-                    </div>
+<div class="card">
+    <div class="card-content pl-7 pr-1 pb-1 mt-0">
+        <div class="is-flex">
+            <div class="image m-2 mr-4" style="width:30%;">
+                <img src="./sample-data/scenery2.jpg" style="width:100%;">
+            </div>
+            <div class="ml-3">
+                <div class="mb-3">
+                    <p class="subtitle has-text-info mb-0">First name:</p><hr class="mb-0 mt-0" />
+                    <p class="subtitle">@Contact?.FirstName</p>
+                </div>
+                <div class="mb-3">
+                    <p class="subtitle has-text-info mb-0">Last name:</p><hr class="mb-0 mt-0" />
+                    <p class="subtitle">@Contact?.LastName</p>
                 </div>
             </div>
-            
+        </div>
+        <div class="mb-3">
+            <p class="subtitle has-text-info mb-0 mt-4">Phone:</p><hr class="mb-0 mt-0">
+            @if (Contact.PhoneNumber == null)
+             {
+                <p class="is-size-7 is-italic">Not Provided</p>
+             }
+            else 
+            {
+                <p class="subtitle">@Contact?.PhoneNumber</p>    
+            }
+        </div>
+        <div class="mb-3">
+            <p class="subtitle has-text-info mb-0">Email:</p><hr class="mb-0 mt-0">
+            @if (Contact.Email == null)
+            {
+                <p class="is-size-7 is-italic">Not Provided</p>
+            }
+            else
+            {
+                <p class="subtitle">@Contact?.Email</p>
+            }
+        </div>
+        <div class="mb-3">
+            <p class="subtitle has-text-info mb-0">Address:</p><hr class="mb-0 mt-0">
+            @if (Contact.Address == null)
+            {
+                <p class="is-size-7 is-italic">Not Provided</p>
+            }
+            else
+            {
+                <p class="subtitle">@Contact?.Address</p>
+            }
         </div>
     </div>
-
+</div>
 
 @code {
     [Parameter]
-    public Contact Contact { get; set; } 
+    public Contact Contact { get; set; }
 
 
 
